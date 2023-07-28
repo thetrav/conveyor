@@ -9,6 +9,15 @@ struct Name(String);
 const FACTORY_TILEMAP: &str = "kenney/pixel_platformer/factory_expansion/tilemap.png";
 const CHARACTER_TILEMAP: &str = "kenney/pixel_platformer/characters_packed.png";
 
+#[derive(Component)]
+struct AnimationIndices {
+    first: usize,
+    last: usize,
+}
+
+#[derive(Component, Deref, DerefMut)]
+struct AnimationTimer(Timer);
+
 fn main() {
     App::new()
         .add_plugins((DefaultPlugins.set(ImagePlugin::default_nearest()),
@@ -33,6 +42,8 @@ fn setup(mut commands: Commands,
                                 None,
                                 None));
 
+    let animation_indices = AnimationIndices { first: 24, last: 26 };
+
     commands.spawn(Camera2dBundle::default());
 
     // commands.spawn(SpriteSheetBundle {
@@ -42,18 +53,43 @@ fn setup(mut commands: Commands,
     //     ..default()
     // });
 
-    commands.spawn(SpriteSheetBundle {
+    commands.spawn((SpriteSheetBundle {
         texture_atlas: character_atlas_handle,
-        sprite: TextureAtlasSprite::new(24),
+        sprite: TextureAtlasSprite::new(animation_indices.first),
         transform: Transform::from_scale(Vec3::splat(6.0)),
         ..default()
-    });
+        },
+       animation_indices,
+       AnimationTimer(Timer::from_seconds(0.1, TimerMode::Repeating)))
+    );
+}
+
+
+fn animate_sprite(
+    time: Res<Time>,
+    mut query: Query<(
+        &AnimationIndices,
+        &mut AnimationTimer,
+        &mut TextureAtlasSprite,
+    )>,
+) {
+    for (indices, mut timer, mut sprite) in &mut query {
+        timer.tick(time.delta());
+        if timer.just_finished() {
+            sprite.index = if sprite.index == indices.last {
+                indices.first
+            } else {
+                sprite.index + 1
+            };
+        }
+    }
 }
 
 pub struct ConveyorPlugin;
 
 impl Plugin for ConveyorPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, setup);
+        app.add_systems(Startup, setup)
+            .add_systems(Update, animate_sprite);
     }
 }
