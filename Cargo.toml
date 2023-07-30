@@ -9,9 +9,11 @@ edition = "2021"
 # when releasing use this
 # bevy = "0.11.0"
 
-# when developing use this for faster compile
-bevy = { version = "0.11.0", features = ["dynamic_linking"] }
+# when developing use dynamic linking for faster compile, does not work for wasm
+#bevy = { version = "0.11.0", features = ["dynamic_linking"] }
+bevy = "0.11.0"
 bevy-inspector-egui = "0.19.0"
+console_error_panic_hook = "0.1"
 
 # Enable a small amount of optimization in debug mode
 [profile.dev]
@@ -23,3 +25,7 @@ opt-level = 3
 
 [target.wasm32-unknown-unknown]
 runner = "wasm-server-runner"
+
+[profile.release]
+opt-level = 's'
+lto = "thin"
