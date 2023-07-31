@@ -3,6 +3,9 @@ name: Release
 on:
   push:
 
+permissions:
+  contents: write
+
 jobs:
   release-wasm:
     runs-on: ubuntu-latest
