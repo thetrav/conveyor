@@ -20,6 +20,11 @@ jobs:
         run: |
           cargo build --release --target wasm32-unknown-unknown
 
+      - name: optimize Wasm
+        uses: NiklasEi/wasm-opt-action@v2
+        with:
+          file: target/wasm32-unknown-unknown/release/conveyor.wasm
+
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
