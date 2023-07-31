@@ -3,8 +3,8 @@ name: Release
 on:
   push:
 
-permissions:
-  contents: write
+env:
+  itch_target: the_trav/conveyor
 
 jobs:
   release-wasm:
@@ -20,16 +20,31 @@ jobs:
         run: |
           cargo build --release --target wasm32-unknown-unknown
 
-      - name: optimize Wasm
-        uses: NiklasEi/wasm-opt-action@v2
-        with:
-          file: target/wasm32-unknown-unknown/release/conveyor.wasm
+      - name: Prepare package
+        run: |
+          wasm-bindgen --no-typescript --out-name conveyor --out-dir wasm --target web target/wasm32-unknown-unknown/release/conveyor.wasm
+          cp -r assets wasm/
 
-      - name: Upload binaries to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: target/wasm32-unknown-unknown/release/conveyor.wasm
-          asset_name: conveyor.wasm
-          tag: 0.1.0
-          overwrite: true
+      - name: Package as a zip
+        working-directory: ./wasm
+        run: |
+          zip --recurse-paths ../conveyor.zip .
+
+      - name: Install butler
+        run: |
+          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip
+          chmod +x butler
+          ./butler -V
+      - uses: olegtarasov/get-tag@v2.1.2
+        id: get_version
+      - name: Upload to itch.io
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
+        run: |
+          ./butler push \
+              --fix-permissions \
+              --userversion="${{ steps.get_version.outputs.tag }}" \
+              conveyor.zip \
+              ${{ env.itch_target }}:wasm
+          
