@@ -23,12 +23,12 @@ pub struct MainCamera;
 
 #[derive(Default, Component)]
 pub struct Player {
-    speed: f32,
-    up: bool,
-    down: bool,
-    left: bool,
-    right: bool,
-    stick_pos: Vec2
+    pub speed: f32,
+    pub up: bool,
+    pub down: bool,
+    pub left: bool,
+    pub right: bool,
+    pub stick_pos: Vec2
 }
 
 
