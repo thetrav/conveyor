@@ -6,7 +6,13 @@ This is all Rahn's idea, you can blame him I'm just the code monkey!
 
 ## watch mode
 ```
-cargo watch -q -c -x 'run --features bevy/dynamic'
+cargo watch -q -c -x 'run --features bevy/dynamic_linking'
+```
+
+## run
+
+```
+cargo run --features bevy/dynamic_linking
 ```
 
 # wasm mode
