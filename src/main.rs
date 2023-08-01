@@ -1,9 +1,5 @@
 use bevy::prelude::*;
 
-use bevy_inspector_egui::quick::WorldInspectorPlugin;
-
-use bevy::input::common_conditions::input_toggle_active;
-
 mod assets;
 mod constants;
 mod components;
@@ -11,10 +7,13 @@ mod sprite_animation;
 mod protagonist;
 mod tiled_loader;
 mod wasm_window_size;
+mod debug;
+mod input;
 
 use crate::assets::*;
 use crate::sprite_animation::*;
 use crate::protagonist::*;
+use crate::input::keyboard::*;
 
 use bevy_ecs_tilemap::prelude::*;
 
@@ -25,11 +24,12 @@ fn main() {
     App::new()
         .add_plugins((
             DefaultPlugins.set(ImagePlugin::default_nearest()),
-            WorldInspectorPlugin::default().run_if(input_toggle_active(false, KeyCode::Escape)),
+            debug::DebugPlugin,
             AssetsPlugin,
             SpriteAnimationPlugin,
             ProtagonistPlugin,
             TilemapPlugin,
+            KeyboardInputPlugin,
             tiled_loader::TiledMapPlugin,
             wasm_window_size::WindowResizePlugin)
         )

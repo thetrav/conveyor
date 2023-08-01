@@ -116,7 +116,7 @@ impl AssetLoader for TiledLoader {
             let mut dependencies = Vec::new();
             let mut tilemap_textures = HashMap::default();
             #[cfg(not(feature = "atlas"))]
-            let mut tile_image_offsets = HashMap::default();
+            let tile_image_offsets = HashMap::default();
 
             for (tileset_index, tileset) in map.tilesets().iter().enumerate() {
                 let tilemap_texture = match &tileset.image {

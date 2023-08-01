@@ -21,7 +21,7 @@ pub struct CursorTool {
 pub struct MainCamera;
 
 
-#[derive(Default, Component)]
+#[derive(Default, Component, Reflect)]
 pub struct Player {
     pub speed: f32,
     pub up: bool,

@@ -7,7 +7,9 @@ impl Plugin for ProtagonistPlugin {
     fn build(&self, app:&mut App) {
         app
             .add_systems(Startup, spawn_protagonist)
-            .add_systems(Update, camera_follow);
+            .add_systems(Update, camera_follow)
+            .add_systems(Update, movement)
+            ;
     }
 }
 
@@ -19,13 +21,31 @@ fn camera_follow(player_query: Query<&Transform, With<Player>>,
         camera_transform.translation.y = player_transform.translation.y;
     }
 
+fn movement(mut player_query: Query<(&Player, &mut Transform)>,
+    time: Res<Time>) {
+    for (player, mut transform) in player_query.iter_mut() {
+        if player.left {
+            transform.translation.x -= player.speed * time.delta_seconds();
+        }
+        if player.right {
+            transform.translation.x += player.speed * time.delta_seconds();
+        }
+        if player.up {
+            transform.translation.y += player.speed * time.delta_seconds();
+        }
+        if player.down {
+            transform.translation.y -= player.speed * time.delta_seconds();
+        }
+    }
+}
+
 fn spawn_protagonist(mut commands: Commands, 
     sprite_sheets: Res<SpriteSheetHandles>
 ) {
     let animation_indices = AnimationIndices { first: 24, last: 26 };
 
     let player = Player{
-        speed: 1.0,
+        speed: 50.0,
         up: false,
         down: false,
         left: false,
