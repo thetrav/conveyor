@@ -10,6 +10,7 @@ mod components;
 mod sprite_animation;
 mod protagonist;
 mod tiled_loader;
+mod wasm_window_size;
 
 use crate::assets::*;
 use crate::sprite_animation::*;
@@ -29,7 +30,8 @@ fn main() {
             SpriteAnimationPlugin,
             ProtagonistPlugin,
             TilemapPlugin,
-            tiled_loader::TiledMapPlugin)
+            tiled_loader::TiledMapPlugin,
+            wasm_window_size::WindowResizePlugin)
         )
         .add_systems(Startup, setup)
         .run();

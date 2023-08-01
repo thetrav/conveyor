@@ -38,8 +38,9 @@ cargo run --target wasm32-unknown-unknown
 ```
 
 ## Bundle game for release
+note: currently fails on my windows box complaining about missing c compiler dependencies but works on the github actions toolchain which is good enough for me
 ```
-cargo build --release --target wasm32-unknown-unknown
+cargo build --release --target wasm32-unknown-unknown --features = tiled/wasm
 ```
 
 ## Create web assets
