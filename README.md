@@ -59,6 +59,10 @@ python -m http.server
 
 ## itch.io
 
+Deployed as draft currently, if you really want to try it here's a secret URL:
+
+https://the-trav.itch.io/conveyor?secret=mHY5xzc2ZragwWTbl8C0X8Tr8
+
 It's more set up for auto deployment to itch.io via butler.
 For my own memory sake, I had to:
 
