@@ -34,7 +34,7 @@ fn main() {
             wasm_window_size::WindowResizePlugin)
         )
         .add_systems(Startup, setup)
-        .insert_resource(Msaa::Off) // see https://github.com/bevyengine/bevy/issues/3593
+        // .insert_resource(Msaa::Off) // see https://github.com/bevyengine/bevy/issues/3593
         .run();
 }
 

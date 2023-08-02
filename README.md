@@ -73,3 +73,10 @@ For my own memory sake, I had to:
 5. Run the butler push
 6. go to the itch project page, edit the game, set the channel I uploaded to html5 play in browser
 
+# Weird pixel borders on tiles
+
+Related to https://github.com/bevyengine/bevy/issues/8150 the bevy texture atlas seems to have problematic sampling at the edges.
+
+I've found that if I use tile maps with any spacing, at some zoom levels the renderer picks the wrong pixel and you get the padding from the tile map showing through making your game look like it's gone through a wire mesh.
+
+There's some talk about MSAA fixing it, however I haven't had any luck there.  Using individual sprite files also could fix it, but there are warnings around doing that with wasm deployments
