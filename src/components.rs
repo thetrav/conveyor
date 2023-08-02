@@ -28,9 +28,25 @@ pub struct Player {
     pub down: bool,
     pub left: bool,
     pub right: bool,
-    pub stick_pos: Vec2
+    pub stick_pos: Vec2,
+    pub deadzone: f32,
+    
 }
 
+impl Player {
+    pub fn left(&self) -> bool {
+        return self.left || self.stick_pos.x < -self.deadzone;
+    }
+    pub fn right(&self) -> bool {
+        return self.right || self.stick_pos.x > self.deadzone;
+    }
+    pub fn up(&self) -> bool {
+        return self.up || self.stick_pos.y > self.deadzone;
+    }
+    pub fn down(&self) -> bool {
+        return self.down || self.stick_pos.y < -self.deadzone;
+    }
+}
 
 #[derive(Resource)]
 pub struct SpriteSheetHandles {

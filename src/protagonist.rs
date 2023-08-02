@@ -24,16 +24,16 @@ fn camera_follow(player_query: Query<&Transform, With<Player>>,
 fn movement(mut player_query: Query<(&Player, &mut Transform)>,
     time: Res<Time>) {
     for (player, mut transform) in player_query.iter_mut() {
-        if player.left {
+        if player.left() {
             transform.translation.x -= player.speed * time.delta_seconds();
         }
-        if player.right {
+        if player.right() {
             transform.translation.x += player.speed * time.delta_seconds();
         }
-        if player.up {
+        if player.up() {
             transform.translation.y += player.speed * time.delta_seconds();
         }
-        if player.down {
+        if player.down() {
             transform.translation.y -= player.speed * time.delta_seconds();
         }
     }
@@ -50,7 +50,8 @@ fn spawn_protagonist(mut commands: Commands,
         down: false,
         left: false,
         right: false,
-        stick_pos: Vec2::splat(1.0)
+        stick_pos: Vec2::splat(1.0),
+        deadzone: 0.4,
        };
 
     commands.spawn((SpriteSheetBundle {

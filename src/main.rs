@@ -14,6 +14,7 @@ use crate::assets::*;
 use crate::sprite_animation::*;
 use crate::protagonist::*;
 use crate::input::keyboard::*;
+use crate::input::controller::*;
 
 use bevy_ecs_tilemap::prelude::*;
 
@@ -30,6 +31,7 @@ fn main() {
             ProtagonistPlugin,
             TilemapPlugin,
             KeyboardInputPlugin,
+            ControllerInputPlugin,
             tiled_loader::TiledMapPlugin,
             wasm_window_size::WindowResizePlugin)
         )
