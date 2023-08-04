@@ -50,7 +50,7 @@ fn spawn_protagonist(mut commands: Commands,
         down: false,
         left: false,
         right: false,
-        stick_pos: Vec2::splat(1.0),
+        stick_pos: Vec2::splat(0.0),
         deadzone: 0.4,
        };
 
